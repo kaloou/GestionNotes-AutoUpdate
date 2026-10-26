@@ -1,0 +1,5 @@
+references/
+bin/
+obj/ 
+.vs/
+.DS_Store

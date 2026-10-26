@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="GestionNotes/GestionNotes.csproj">
+    <Build Solution="Release|*" Project="false" />
+  </Project>
+  <Project Path="Updater/Updater.csproj" />
+</Solution>
