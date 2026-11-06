@@ -67,11 +67,32 @@ static int Executer(string[] args)
             throw new InvalidDataException("L'archive ne contient aucun fichier !");
         }
 
-        // Remplacement des fichiers de l'ancienne version
-        CopierFichiers(dossierExtraction, dossierInstallation);
+        // Sauvegarde de l'installation actuelle, pour pouvoir la restaurer si le remplacement échoue
+        string dossierSauvegarde = dossierExtraction + "-sauvegarde";
+        CopierFichiers(dossierInstallation, dossierSauvegarde);
 
-        // Suppression du dossier d'extraction
+        // Remplacement des fichiers de l'ancienne version
+        try
+        {
+            CopierFichiers(dossierExtraction, dossierInstallation);
+        }
+        catch (Exception)
+        {
+            try
+            {
+                CopierFichiers(dossierSauvegarde, dossierInstallation);
+            }
+            catch (Exception)
+            {
+                // Le fichier qui bloque n'a pas été remplacé : ceux qui le précèdent sont déjà restaurés
+            }
+
+            throw;
+        }
+
+        // Suppression des dossiers d'extraction et de sauvegarde
         Directory.Delete(dossierExtraction, true);
+        Directory.Delete(dossierSauvegarde, true);
 
         // Suppression de l'archive temporaire
         File.Delete(cheminArchive);
@@ -85,24 +106,35 @@ static int Executer(string[] args)
             throw new FileNotFoundException("GestionNotes.exe est introuvable !");
         }
 
-        Process.Start(new ProcessStartInfo
-        {
-            FileName = cheminApplication,
-            WorkingDirectory = dossierInstallation,
-            UseShellExecute = true
-        });
+        Demarrer(cheminApplication, dossierInstallation);
 
         return 0;
     }
     catch (Exception ex)
     {
         // Affichage de l'erreur
-        MessageBox.Show("Une erreur est survenue durant la mise à jour !" + ex.Message,
+        MessageBox.Show("Une erreur est survenue durant la mise à jour !\n" + ex.Message,
             "Erreur de mise à jour",
             MessageBoxButton.OK,
             MessageBoxImage.Error);
 
+        // Relance de la version présente dans le dossier d'installation pour que l'application reste utilisable
+        if (args.Length >= 2 && File.Exists(Path.Combine(args[1], "GestionNotes.exe")))
+        {
+            Demarrer(Path.Combine(args[1], "GestionNotes.exe"), args[1]);
+        }
+
         return 1;
+    }
+
+    static void Demarrer(string cheminApplication, string dossierInstallation)
+    {
+        Process.Start(new ProcessStartInfo
+        {
+            FileName = cheminApplication,
+            WorkingDirectory = dossierInstallation,
+            UseShellExecute = true
+        });
     }
 
     static void CopierFichiers(string source, string destination)
@@ -121,8 +153,8 @@ static int Executer(string[] args)
         {
             string cheminRelatif = Path.GetRelativePath(source, fichier);
 
-            // Permet de ne pas remplacer le programme auxilliaire en cours
-            if (string.Equals(cheminRelatif, "Updater.exe", StringComparison.OrdinalIgnoreCase))
+            // Permet de ne pas remplacer le programme auxilliaire en cours (Updater.exe, Updater.dll, etc.)
+            if (Path.GetFileName(cheminRelatif).StartsWith("Updater.", StringComparison.OrdinalIgnoreCase))
             {
                 continue;
             }

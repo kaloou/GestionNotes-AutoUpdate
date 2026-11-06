@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.IO.Compression;
 using System.Text;
 using System.Text.Json;
 
@@ -113,6 +114,15 @@ namespace GestionNotes.Services
                     File.Delete(cheminLocal);
 
                     throw new IOException("La copie de l'archive ZIP est incomplète !");
+                }
+
+                // Vérification que l'archive est lisible et contient l'application, avant de fermer GestionNotes
+                using (ZipArchive archive = ZipFile.OpenRead(cheminLocal))
+                {
+                    if (archive.GetEntry("GestionNotes.exe") == null)
+                    {
+                        throw new InvalidDataException("L'archive ZIP ne contient pas GestionNotes.exe à sa racine !");
+                    }
                 }
 
                 // Retourne le chemin local qui sera utilisé pour appliquer la mise à jour

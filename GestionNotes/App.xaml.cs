@@ -60,19 +60,18 @@ namespace GestionNotes
                                 throw new InvalidOperationException("Le programme Updater.exe est introuvable !");
                             }
 
-                            // Préparation des arguments nécessaires
-                            string arguments = $"\"{cheminLocal}\" " +
-                                $"\"{dossierInstallation}\" " +
-                                $"{System.Diagnostics.Process.GetCurrentProcess().Id}";
-
                             // Préparation du lancement de Updater
                             ProcessStartInfo demarrage = new ProcessStartInfo
                             {
                                 FileName = cheminUpdater,
-                                Arguments = arguments,
                                 UseShellExecute = false,
                                 CreateNoWindow = true
                             };
+
+                            // ArgumentList gère les guillemets : le \ final du dossier d'installation échapperait sinon le guillemet fermant
+                            demarrage.ArgumentList.Add(cheminLocal);
+                            demarrage.ArgumentList.Add(dossierInstallation);
+                            demarrage.ArgumentList.Add(Environment.ProcessId.ToString());
 
                             //Message de succès
                             MessageBox.Show("La mise à jour a été téléchargée avec succès !" +
@@ -87,10 +86,10 @@ namespace GestionNotes
                             // Fermeture de GestionNotes
                             Application.Current.Shutdown();
                         }
-                        catch (InvalidOperationException ex)
+                        catch (Exception ex) when (ex is InvalidOperationException or System.ComponentModel.Win32Exception)
                         {
                             MessageBox.Show(ex.Message,
-                                "\nErreur de téléchargement",
+                                "Erreur de téléchargement",
                                 MessageBoxButton.OK,
                                 MessageBoxImage.Warning);
                         }
