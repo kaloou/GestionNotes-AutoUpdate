@@ -6,6 +6,48 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <UseWPF>true</UseWPF>
+	  
+	<!--
+    Version générale du projet
+    Format habituel : MAJEUR.MINEUR.CORRECTIF
+    Exemple : 1.0.0
+    - MAJEUR : changements importants ou incompatibles dans le projet
+    - MINEUR : ajout de fonctionnalités compatibles avec les versions précédentes du projet
+    - CORRECTIF : corrections de bogues dans le projet, sans changement majeur de fonctionnalités
+	
+	Elle est récupérable en C# avec :
+	string? version = Assembly.GetExecutingAssembly().GetCustomAttribute<AssemblyInformationalVersionAttribute>()?.InformationalVersion;
+    -->
+	<Version>1.0.0</Version>
+
+	<!--
+    Version de l'assembly .NET (CELLE QUI NOUS INTÉRESSE)
+    Format : MAJEUR.MINEUR.BUILD.RÉVISION
+	Exemple : 1.0.0.0
+	- MAJEUR : version principale de l'application
+    - MINEUR : évolution secondaire de l'application
+    - BUILD : numéro de compilation ou de version intermédiaire
+    - RÉVISION : correction ou révision supplémentaire
+	
+    Elle est récupérable en C# avec :
+    Version? version = Assembly.GetExecutingAssembly().GetName().Version
+    -->
+	<AssemblyVersion>1.0.0.0</AssemblyVersion>
+
+	<!--
+    Version du fichier exécutable Windows
+    Elle est notamment visible dans les propriétés du fichier.
+    Format : MAJEUR.MINEUR.BUILD.RÉVISION
+    Exemple : 1.0.0.0
+	- MAJEUR : version principale du fichier
+    - MINEUR : évolution secondaire du fichier
+    - BUILD : numéro de compilation ou de version intermédiaire
+    - RÉVISION : correction ou révision supplémentaire
+	
+	Elle est récupérable en C# avec :
+	string? version = FileVersionInfo.GetVersionInfo(Assembly.GetExecutingAssembly().Location).FileVersion;
+    -->
+	<FileVersion>1.0.0.0</FileVersion>
   </PropertyGroup>
 
 </Project>
