@@ -18,7 +18,7 @@
 	Elle est récupérable en C# avec :
 	string? version = Assembly.GetExecutingAssembly().GetCustomAttribute<AssemblyInformationalVersionAttribute>()?.InformationalVersion;
     -->
-	<Version>1.0.0</Version>
+	<Version>1.1.0</Version>
 
 	<!--
     Version de l'assembly .NET (CELLE QUI NOUS INTÉRESSE)
@@ -32,7 +32,7 @@
     Elle est récupérable en C# avec :
     Version? version = Assembly.GetExecutingAssembly().GetName().Version
     -->
-	<AssemblyVersion>1.0.0.0</AssemblyVersion>
+	<AssemblyVersion>1.1.0.0</AssemblyVersion>
 
 	<!--
     Version du fichier exécutable Windows
@@ -47,7 +47,7 @@
 	Elle est récupérable en C# avec :
 	string? version = FileVersionInfo.GetVersionInfo(Assembly.GetExecutingAssembly().Location).FileVersion;
     -->
-	<FileVersion>1.0.0.0</FileVersion>
+	<FileVersion>1.1.0.0</FileVersion>
   </PropertyGroup>
 
 </Project>
