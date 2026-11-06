@@ -59,7 +59,7 @@ public class Étudiant : INotifyPropertyChanged
         }
 
         // Bogue volontaire : on divise toujours par 1 de plus que le nombre de note que l'étudiant a.
-        return Notes.Sum() / (Notes.Count+1);
+        return Notes.Average();
     }
 
     public event PropertyChangedEventHandler? PropertyChanged;
