@@ -1,7 +1,7 @@
 # GestionNotes — Mécanisme de mise à jour automatique
 
 **Cours :** Déploiement
-**Auteurs :** Lucas Paludetto et Mathieu Tenret
+**Auteurs :** Lucas Paludetto (2630755) et Mathieu Tenret (2633645)
 **Dépôt réseau :** `\\WIN-V9MDIVV3MVO\GestionNotes-Depot`
 
 ## 1. Présentation
